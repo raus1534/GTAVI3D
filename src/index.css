@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "GTAFont";
+  src: url("/fonts/gta-font.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@layer utilities {
+  .text-stroke {
+    -webkit-text-stroke-width: 0.5px;
+    -webkit-text-stroke-color: black;
+  }
+}
+
+.default-font {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.mask-text {
+  position: relative;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background: black;
+  mix-blend-mode: destination-out;
+}
+
+body {
+  font-family: "GTAFont", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.test {
+  border: 1px solid red;
+}
