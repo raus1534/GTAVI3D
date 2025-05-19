@@ -6,17 +6,19 @@ import { FaCheck, FaHeart, FaStar } from "react-icons/fa";
 import { FaArrowRightLong } from "react-icons/fa6";
 import Footer from "./components/Footer";
 import { useLanguage } from "./contexts/LanguageContext";
+import type { Language } from "./types";
+import { useTranslation } from "react-i18next";
 
 export default function App() {
   const [showContent, setShowContent] = useState<boolean>(false);
   const [time, setTime] = useState({ hour: "00", minute: "00" });
   const [open, setOpen] = useState(false);
 
-  const { language, setLanguage } = useLanguage();
+  const { language, handleLanguageChange } = useLanguage();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -162,7 +164,7 @@ export default function App() {
                         <div
                           key={lang}
                           onClick={() => {
-                            setLanguage(lang as "English" | "Nepali");
+                            handleLanguageChange(lang as Language);
                             setOpen(false);
                           }}
                           className="flex justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100 rounded"
@@ -291,11 +293,7 @@ export default function App() {
                 </h1>
                 <hr className="w-14 border-[1.5px] border-gray-400" />
                 <p className="default-font text-xs text-justify font-semibold">
-                  Grand Theft Auto VI is set in the state of Leonida, home to
-                  the neon-lit streets of Vice City and more. This opus, the
-                  largest and most immersive in the Grand Theft Auto series to
-                  date, will be available in 2026 on PlayStation 5 and Xbox
-                  Series X|S.
+                  {t("desc")}
                 </p>
               </div>
               <div className="w-full h-28 bg-black flex justify-center items-center">

@@ -5,10 +5,11 @@ import React, {
   type ReactNode,
 } from "react";
 import type { Language } from "../types";
+import { useTranslation } from "react-i18next";
 
 interface LanguageContextProps {
   language: Language;
-  setLanguage: (lang: Language) => void;
+  handleLanguageChange: (lang: Language) => void;
 }
 
 const LanguageContext = createContext<LanguageContextProps | undefined>(
@@ -19,9 +20,15 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [language, setLanguage] = useState<Language>("English");
+  const { i18n } = useTranslation();
+
+  const handleLanguageChange = (lang: Language) => {
+    setLanguage(lang);
+    i18n.changeLanguage(lang);
+  };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage }}>
+    <LanguageContext.Provider value={{ language, handleLanguageChange }}>
       {children}
     </LanguageContext.Provider>
   );

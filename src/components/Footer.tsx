@@ -13,7 +13,7 @@ import type { Language } from "../types";
 
 export default function Footer() {
   const [langOpen, setLangOpen] = useState(false);
-  const { language, setLanguage } = useLanguage();
+  const { language, handleLanguageChange } = useLanguage();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const navLinks1 = [
@@ -34,7 +34,7 @@ export default function Footer() {
   const socialIcons = [FaTwitter, FaInstagram, FaYoutube, FaTwitch];
 
   const handleLangChange = (lang: Language) => {
-    setLanguage(lang);
+    handleLanguageChange(lang);
     setLangOpen(false);
   };
 
