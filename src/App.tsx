@@ -5,13 +5,15 @@ import { CiGlobe } from "react-icons/ci";
 import { FaCheck, FaHeart, FaStar } from "react-icons/fa";
 import { FaArrowRightLong } from "react-icons/fa6";
 import Footer from "./components/Footer";
+import { useLanguage } from "./contexts/LanguageContext";
 
 export default function App() {
   const [showContent, setShowContent] = useState<boolean>(false);
-
   const [time, setTime] = useState({ hour: "00", minute: "00" });
   const [open, setOpen] = useState(false);
-  const [language, setLanguage] = useState<"English" | "Nepali">("English");
+
+  const { language, setLanguage } = useLanguage();
+
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown on outside click

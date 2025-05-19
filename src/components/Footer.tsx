@@ -6,11 +6,14 @@ import {
   FaTwitch,
   FaTwitter,
   FaYoutube,
+  FaCheck,
 } from "react-icons/fa6";
+import { useLanguage } from "../contexts/LanguageContext";
+import type { Language } from "../types";
 
 export default function Footer() {
   const [langOpen, setLangOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState("English");
+  const { language, setLanguage } = useLanguage();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const navLinks1 = [
@@ -30,8 +33,8 @@ export default function Footer() {
   const locations = ["New York", "London", "Paris", "Bogota"];
   const socialIcons = [FaTwitter, FaInstagram, FaYoutube, FaTwitch];
 
-  const handleLangChange = (lang: string) => {
-    setSelectedLang(lang);
+  const handleLangChange = (lang: Language) => {
+    setLanguage(lang);
     setLangOpen(false);
   };
 
@@ -93,26 +96,26 @@ export default function Footer() {
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setLangOpen(!langOpen)}
-            className="flex items-center gap-2 text-sm hover:text-gray-300"
+            className="absolute right-0 flex items-center gap-2 text-sm hover:text-gray-300"
           >
             <CiGlobe size={16} />
-            <span>{selectedLang}</span>
-            <FaChevronDown size={16} />
+            <span>{language}</span>
+            <FaChevronDown size={12} className="ml-2" />
           </button>
           {langOpen && (
-            <div className="absolute right-0 mt-2 bg-black border border-gray-700 rounded shadow-md z-10">
-              <button
-                onClick={() => handleLangChange("English")}
-                className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-800"
-              >
-                English
-              </button>
-              <button
-                onClick={() => handleLangChange("Nepali")}
-                className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-800"
-              >
-                Nepali
-              </button>
+            <div className="absolute right-0 top-5 mt-2 bg-black border border-gray-700 rounded shadow-md z-10 w-32">
+              {["English", "Nepali"].map((lang) => (
+                <button
+                  key={lang}
+                  onClick={() => handleLangChange(lang as Language)}
+                  className="flex justify-between items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-800"
+                >
+                  <span>{lang}</span>
+                  {language === lang && (
+                    <FaCheck className="text-white text-base" />
+                  )}
+                </button>
+              ))}
             </div>
           )}
         </div>
