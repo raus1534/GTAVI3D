@@ -15,6 +15,7 @@ export default function App() {
   const [time, setTime] = useState({ hour: "00", minute: "00" });
   const [open, setOpen] = useState(false);
   const [stars, setStars] = useState<number>(1);
+  const [viewBox, setViewBox] = useState("0 0 500 1000");
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -22,7 +23,17 @@ export default function App() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    setStars(5 - getStars());
+    const updateViewBox = () => {
+      if (window.innerWidth < 640) {
+        setViewBox("0 0 800 1500"); // Mobile
+      } else {
+        setViewBox("0 0 1000 500"); // Desktop
+      }
+    };
+
+    updateViewBox();
+    window.addEventListener("resize", updateViewBox);
+    return () => window.removeEventListener("resize", updateViewBox);
   }, []);
 
   useEffect(() => {
@@ -49,32 +60,55 @@ export default function App() {
 
     updateTime();
     const interval = setInterval(updateTime, 1000);
+    setStars(5 - getStars());
 
     return () => clearInterval(interval);
   }, []);
 
   useGSAP(() => {
-    const tl = gsap.timeline();
-    tl.to(".vi-mask-group", {
-      rotate: 80,
-      scale: 5,
-      y: "-500",
-      transformOrigin: "50% 50%",
-      duration: 1,
-      delay: 1,
-      ease: "power2.inOut",
-    }).to(".vi-mask-group", {
-      rotate: 90,
-      scale: 10,
-      y: "-1000",
-      delay: -0.5,
-      duration: 0.8,
-      onComplete: function () {
-        document.querySelector(".svgDiv")?.remove();
-        setShowContent(true);
-        this.kill();
-      },
+    const mm = gsap.matchMedia();
+
+    mm.add("(max-width: 768px)", () => {
+      const tl = gsap.timeline();
+      tl.to(".vi-mask-group", {
+        scale: 30,
+        transformOrigin: "50% 50%",
+        duration: 0.8,
+        delay: 0.5,
+        ease: "power2.inOut",
+        onComplete: function () {
+          document.querySelector(".svgDiv")?.remove();
+          setShowContent(true);
+          this.kill();
+        },
+      });
     });
+
+    mm.add("(min-width: 769px)", () => {
+      const tl = gsap.timeline();
+      tl.to(".vi-mask-group", {
+        rotate: 80,
+        scale: 5,
+        y: "-500",
+        transformOrigin: "50% 50%",
+        duration: 1,
+        delay: 1,
+        ease: "power2.inOut",
+      }).to(".vi-mask-group", {
+        rotate: 90,
+        scale: 10,
+        y: "-1000",
+        delay: -0.5,
+        duration: 0.8,
+        onComplete: function () {
+          document.querySelector(".svgDiv")?.remove();
+          setShowContent(true);
+          this.kill();
+        },
+      });
+    });
+
+    return () => mm.kill(); // clean up on component unmount
   });
 
   useGSAP(() => {
@@ -142,9 +176,6 @@ export default function App() {
       gsap.to(".sky", {
         x: xMove,
       });
-      gsap.to(".bg", {
-        x: xMove * 1.7,
-      });
     });
   }, [showContent]);
 
@@ -152,9 +183,9 @@ export default function App() {
     <>
       <div className="svgDiv flex items-center justify-center h-screen w-full bg-black overflow-hidden">
         <svg
-          viewBox="0 0 1000 500"
-          preserveAspectRatio="xMidYMid meet"
-          className="svg"
+          viewBox={viewBox}
+          preserveAspectRatio="xMidYMid slice"
+          className="svg "
         >
           <defs>
             <mask id="vi-mask">
@@ -179,20 +210,16 @@ export default function App() {
             {/* Sky - full background */}
             <image
               href="/sky.png"
-              x="0"
-              y="0"
-              width="1000"
-              height="500"
+              width="100%"
+              height="100%"
               preserveAspectRatio="xMidYMid slice"
             />
 
             {/* Building - bottom half */}
             <image
               href="/building.png"
-              x="0"
-              y="0"
-              width="1000"
-              height="500"
+              width="100%"
+              height="100%"
               preserveAspectRatio="xMidYMid slice"
             />
           </g>
@@ -255,7 +282,7 @@ export default function App() {
             </div>
             <img
               src="/sky.png"
-              className="sky scale-105 absolute top-0 left-0 w-full h-full object-cover overflow-hidden"
+              className="sky md:scale-105 scale-120 absolute top-0 left-0 w-full h-full object-cover overflow-hidden"
               alt="Sky"
             />
             <img
@@ -263,51 +290,6 @@ export default function App() {
               className="building absolute top-0 left-0 w-full h-full object-cover overflow-hidden"
               alt="Building"
             />
-            <div
-              className="flex flex-col absolute text-[120px] font-bold text-white -space-y-10"
-              style={{
-                top: "45%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-              }}
-            >
-              <span className="mx-auto">grand</span>
-              <span className="mx-auto md:pl-32">theft</span>
-              <span className="mx-auto">auto</span>
-            </div>
-
-            <img
-              src="./map.png"
-              alt="Map"
-              className="map md:block hidden absolute bottom-5 rotate-90 left-6 w-40 object-contain overflow-hidden"
-            />
-            <div className="rockstar md:flex hidden absolute bottom-8 right-144  flex-col items-end justify-center">
-              <img
-                src="./rockstar.png"
-                alt="Rockstar"
-                className="w-12 h-12 object-contain overflow-hidden"
-              />
-              <span className="text-white text-lg default-font font-bold">
-                MCMXCVIII
-              </span>
-            </div>
-            <img
-              src="/avatar.png"
-              className="avatar absolute rotate-12  left-0 md:top-144 w-full  h-full object-contain overflow-hidden"
-              alt="Avatar"
-            />
-            <div className="absolute h-12 bottom-6 left-1/2 transform -translate-x-1/2 w-full flex justify-center space-x-8 items-center  object-contain">
-              <img
-                src="/PS6_logo.png"
-                className="object-contain overflow-hidden w-20"
-                alt="PS6"
-              />
-              <img
-                src="/XBOX_logo.png"
-                className="object-contain overflow-hidden w-24"
-                alt="XBOX"
-              />
-            </div>
             <div
               className="star hidden md:flex flex-col absolute text-white"
               style={{
@@ -326,6 +308,54 @@ export default function App() {
                 )}
               </div>
             </div>
+            <div
+              className=" text flex flex-col absolute text-[120px] font-bold text-white -space-y-10"
+              style={{
+                top: "45%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              <span className="mx-auto">grand</span>
+              <span className="mx-auto md:pl-32">theft</span>
+              <span className="mx-auto">auto</span>
+            </div>
+
+            <img
+              src="./map.png"
+              alt="Map"
+              className="map md:block hidden absolute bottom-5 rotate-90 left-6 w-40 object-contain overflow-hidden"
+            />
+
+            <div className="rockstar md:flex hidden absolute bottom-8 right-144  flex-col items-end justify-center">
+              <img
+                src="./rockstar.png"
+                alt="Rockstar"
+                className="w-12 h-12 object-contain overflow-hidden"
+              />
+              <span className="text-white text-lg default-font font-bold">
+                MCMXCVIII
+              </span>
+            </div>
+
+            <img
+              src="/avatar.png"
+              className="avatar absolute rotate-12  left-0 md:top-144 w-full  h-full object-contain overflow-hidden"
+              alt="Avatar"
+            />
+            <div className="absolute h-12 bottom-6 left-1/2 transform -translate-x-1/2 w-full flex justify-center space-x-8 items-center  object-contain">
+              <img
+                src="/PS6_logo.png"
+                className="object-contain overflow-hidden w-20"
+                alt="PS6"
+              />
+              <img
+                src="/XBOX_logo.png"
+                className="object-contain overflow-hidden w-24"
+                alt="XBOX"
+              />
+            </div>
+
             <div
               className="md:flex hidden flex-col absolute text-white"
               style={{
