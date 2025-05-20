@@ -7,17 +7,23 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import Footer from "./components/Footer";
 import { useLanguage } from "./contexts/LanguageContext";
 import type { Language } from "./types";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
+import { getStars } from "./utils";
 
 export default function App() {
   const [showContent, setShowContent] = useState<boolean>(false);
   const [time, setTime] = useState({ hour: "00", minute: "00" });
   const [open, setOpen] = useState(false);
-
-  const { language, handleLanguageChange } = useLanguage();
+  const [stars, setStars] = useState<number>(1);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const { language, handleLanguageChange } = useLanguage();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setStars(5 - getStars());
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -85,8 +91,60 @@ export default function App() {
     gsap.to(".avatar", {
       rotate: 0,
       duration: 1,
+      top: 144,
       delay: -0.5,
       ease: "Expo.easeInOut",
+    });
+
+    gsap.to(".map", {
+      rotate: 0,
+      duration: 1.5,
+      delay: 0.1,
+      ease: "Expo.easeInOut",
+    });
+
+    gsap.to(".burger", {
+      left: 25,
+      duration: 1.5,
+      delay: 0.1,
+      ease: "Expo.easeInOut",
+    });
+
+    gsap.to(".rockstar", {
+      right: 20,
+      duration: 1.5,
+      delay: 0.1,
+      ease: "Expo.easeInOut",
+    });
+
+    gsap.to(".descBox", {
+      top: 20,
+      duration: 1.5,
+      delay: 0.1,
+      ease: "Expo.easeInOut",
+    });
+
+    gsap.to(".star", {
+      left: "18%",
+      duration: 1.5,
+      delay: 0.1,
+      ease: "Expo.easeInOut",
+    });
+
+    const main = document.querySelector(".main");
+
+    main?.addEventListener("mousemove", function (e) {
+      const mouseEvent = e as MouseEvent;
+      const xMove = (mouseEvent.clientX / window.innerWidth - 0.5) * 40;
+      gsap.to(".main .text", {
+        x: `${xMove * 0.4}%`,
+      });
+      gsap.to(".sky", {
+        x: xMove,
+      });
+      gsap.to(".bg", {
+        x: xMove * 1.7,
+      });
     });
   }, [showContent]);
 
@@ -145,14 +203,14 @@ export default function App() {
           <div className="main rotate-12 scale-200 relative flex items-center justify-center h-screen max-w-screen overflow-hidden">
             <div className="absolute z-10 top-0 left-0 flex h-18 w-screen px-8 space-x-40">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-full  flex flex-col justify-center space-y-1">
+                <div className="burger w-10 h-full  flex flex-col justify-center space-y-1 absolute left-144">
                   <div className="md:h-2 h-1.5 bg-white md:w-10 w-8"></div>
                   <div className="md:h-2 h-1.5 bg-white md:w-10 w-8"></div>
                   <div className="md:h-2 h-1.5 bg-white md:w-6 w-5"></div>
                 </div>
                 <div className="relative" ref={dropdownRef}>
                   <div
-                    className="md:w-10 w-8 md:h-9 h-7 bg-black rounded flex justify-center items-center cursor-pointer"
+                    className="md:ml-12 ml-10 md:w-10 w-8 md:h-9 h-7 bg-black rounded flex justify-center items-center cursor-pointer"
                     onClick={() => setOpen((prev) => !prev)}
                   >
                     <CiGlobe className="text-white text-lg" />
@@ -197,7 +255,7 @@ export default function App() {
             </div>
             <img
               src="/sky.png"
-              className="sky absolute top-0 left-0 w-full h-full object-cover overflow-hidden"
+              className="sky scale-105 absolute top-0 left-0 w-full h-full object-cover overflow-hidden"
               alt="Sky"
             />
             <img
@@ -221,9 +279,9 @@ export default function App() {
             <img
               src="./map.png"
               alt="Map"
-              className="md:block hidden absolute bottom-5 left-6 w-40 object-contain overflow-hidden"
+              className="map md:block hidden absolute bottom-5 rotate-90 left-6 w-40 object-contain overflow-hidden"
             />
-            <div className="md:flex hidden absolute bottom-8 right-5  flex-col items-end justify-center">
+            <div className="rockstar md:flex hidden absolute bottom-8 right-144  flex-col items-end justify-center">
               <img
                 src="./rockstar.png"
                 alt="Rockstar"
@@ -235,7 +293,7 @@ export default function App() {
             </div>
             <img
               src="/avatar.png"
-              className="avatar absolute rotate-12  left-0 top-44 w-full  h-full object-contain overflow-hidden"
+              className="avatar absolute rotate-12  left-0 md:top-144 w-full  h-full object-contain overflow-hidden"
               alt="Avatar"
             />
             <div className="absolute h-12 bottom-6 left-1/2 transform -translate-x-1/2 w-full flex justify-center space-x-8 items-center  object-contain">
@@ -251,16 +309,16 @@ export default function App() {
               />
             </div>
             <div
-              className="hidden md:flex flex-col absolute text-white"
+              className="star hidden md:flex flex-col absolute text-white"
               style={{
                 top: "30%",
-                left: "18%",
+                left: "50%",
                 transform: "translate(-50%, -50%)",
               }}
             >
               <div className="flex space-x-1 text-xl">
                 {[...Array(5)].map((_, i) =>
-                  i < 3 ? (
+                  i < stars ? (
                     <FaStar key={i} className="text-yellow-400" />
                   ) : (
                     <FaStar key={i} className="text-white" />
@@ -277,7 +335,7 @@ export default function App() {
               }}
             >
               <div className="h-28 w-24 border-[3px] border-white">
-                <div className="h-4/5 flex justify-center items-center default-font font-extrabold text-7xl">
+                <div className="h-4/5 flex justify-center items-center default-font font-extrabold text-6xl tracking-tighter p-1">
                   18
                 </div>
                 <div className="bg-white text-black h-1/5 default-font text-sm text-center font-extralight">
@@ -285,11 +343,14 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <div className="absolute top-6 right-6 md:block hidden w-[220px]">
+            <div className="descBox absolute top-50 right-6 md:block hidden w-[220px]">
               <div className="flex flex-col h-[17rem] space-y-4 w-full bg-white  p-3 px-5">
-                <h1 className="text-[#e283cc] text-3xl text-stroke">
-                  Welcome to <br />
-                  Leonida
+                <h1
+                  className={`text-[#e283cc] text-3xl text-stroke ${
+                    language === "Nepali" && "nepali-font"
+                  }`}
+                >
+                  <Trans i18nKey="welcome" components={{ br: <br /> }} />
                 </h1>
                 <hr className="w-14 border-[1.5px] border-gray-400" />
                 <p className="default-font text-xs text-justify font-semibold">
@@ -315,7 +376,7 @@ export default function App() {
                 className="flex justify-between items-center py-2 px-1"
               >
                 <span className="default-font font-bold text-xs uppercase">
-                  Watch Trailer
+                  {t("watch_trailer")}
                 </span>
                 <FaArrowRightLong className="text-black" />
               </a>

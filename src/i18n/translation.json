@@ -1,10 +1,12 @@
 {
   "English": {
-    "welcome": "Welcome to Leonida",
-    "desc": "Grand Theft Auto VI is set in the state of Leonida, home to the neon-lit streets of Vice City and more. This opus, the largest and most immersive in the Grand Theft Auto series to date, will be available in 2026 on PlayStation 5 and Xbox Series X|S."
+    "welcome": "Welcome to <br/> Leonida",
+    "desc": "Grand Theft Auto VI is set in the state of Leonida, home to the neon-lit streets of Vice City and more. This opus, the largest and most immersive in the Grand Theft Auto series to date, will be available in 2026 on PlayStation 5 and Xbox Series X|S.",
+    "watch_trailer": "WATCH TRAILER"
   },
   "Nepali": {
-    "welcome": "लियोनिडामा स्वागत छ",
-    "desc": "Grand Theft Auto VI लियोनिडा राज्यमा आधारित छ, जहाँ Vice City का उज्याला सडकहरू र अन्य धेरै चीजहरू छन्। यो श्रृंखलाको अहिलेसम्मकै सबैभन्दा ठूलो र डुबुल्की मार्न सकिने अनुभव हुने संस्करण हो, जुन २०२६ मा PlayStation 5 र Xbox Series X|S मा उपलब्ध हुनेछ।"
+    "welcome": "स्वागत छ <br/> लियोनिडामा ",
+    "desc": "Grand Theft Auto VI लियोनिडा राज्यमा आधारित छ, जहाँ Vice City का उज्याला सडकहरू र अन्य धेरै चीजहरू छन्। यो श्रृंखलाको अहिलेसम्मकै सबैभन्दा ठूलो र डुबुल्की मार्न सकिने अनुभव हुने संस्करण हो, जुन २०२६ मा PlayStation 5 र Xbox Series X|S मा उपलब्ध हुनेछ।",
+    "watch_trailer": "TRAILER हेर्नुहोस्"
   }
 }

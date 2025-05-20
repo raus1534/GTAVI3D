@@ -1,6 +1,7 @@
 import React, {
   createContext,
   useContext,
+  useEffect,
   useState,
   type ReactNode,
 } from "react";
@@ -26,6 +27,10 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({
     setLanguage(lang);
     i18n.changeLanguage(lang);
   };
+
+  useEffect(() => {
+    handleLanguageChange(language);
+  }, []);
 
   return (
     <LanguageContext.Provider value={{ language, handleLanguageChange }}>
