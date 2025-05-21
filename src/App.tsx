@@ -267,6 +267,7 @@ export default function App() {
               <img
                 src="./vi.png"
                 className="absolute md:top-2 top-4 left-1/2 transform -translate-x-1/2 md:w-20 md:h-20 w-12 h-12 object-contain overflow-hidden"
+                loading="eager"
               />
               <div className="w-20 h-full text-2xl py-2 text-stroke -space-y-1.5">
                 <div className="space-x-1  flex items-center">
@@ -284,11 +285,13 @@ export default function App() {
               src="/sky.png"
               className="sky md:scale-105 scale-120 absolute top-0 left-0 w-full h-full object-cover overflow-hidden"
               alt="Sky"
+              loading="eager"
             />
             <img
               src="/building.png"
               className="building absolute top-0 left-0 w-full h-full object-cover overflow-hidden"
               alt="Building"
+              loading="eager"
             />
             <div
               className="star hidden md:flex flex-col absolute text-white"
@@ -325,6 +328,7 @@ export default function App() {
               src="./map.png"
               alt="Map"
               className="map md:block hidden absolute bottom-5 rotate-90 left-6 w-40 object-contain overflow-hidden"
+              loading="eager"
             />
 
             <div className="rockstar md:flex hidden absolute bottom-8 right-144  flex-col items-end justify-center">
@@ -332,6 +336,7 @@ export default function App() {
                 src="./rockstar.png"
                 alt="Rockstar"
                 className="w-12 h-12 object-contain overflow-hidden"
+                loading="eager"
               />
               <span className="text-white text-lg default-font font-bold">
                 MCMXCVIII
@@ -342,17 +347,20 @@ export default function App() {
               src="/avatar.png"
               className="avatar absolute rotate-12  left-0 md:top-144 w-full  h-full object-contain overflow-hidden"
               alt="Avatar"
+              loading="eager"
             />
             <div className="absolute h-12 bottom-6 left-1/2 transform -translate-x-1/2 w-full flex justify-center space-x-8 items-center  object-contain">
               <img
                 src="/PS6_logo.png"
                 className="object-contain overflow-hidden w-20"
                 alt="PS6"
+                loading="eager"
               />
               <img
                 src="/XBOX_logo.png"
                 className="object-contain overflow-hidden w-24"
                 alt="XBOX"
+                loading="eager"
               />
             </div>
 
@@ -419,6 +427,7 @@ export default function App() {
                   src="/gta_logo.png"
                   className="object-contain overflow-hidden md:w-96 w-72"
                   alt="Official Logo"
+                  loading="eager"
                 />
               </div>
               <div className="flex-1 default-font space-y-4">
