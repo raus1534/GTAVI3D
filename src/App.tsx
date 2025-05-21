@@ -127,7 +127,7 @@ export default function App() {
       duration: 1,
       top: 144,
       delay: -0.5,
-      ease: "Expo.easeInOut",
+      ease: "Expo.in",
     });
 
     gsap.to(".map", {
